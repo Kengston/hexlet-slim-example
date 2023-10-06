@@ -4,6 +4,9 @@ require __DIR__ . '/../vendor/autoload.php';
 
 use Slim\Factory\AppFactory;
 use DI\Container;
+use Illuminate\Support\Collection;
+
+$users = ['mike', 'mishel', 'adel', 'keks', 'kamila'];
 
 $container = new Container();
 $container -> set('renderer', function () {
@@ -18,13 +21,6 @@ $app->get('/', function ($request, $response) {
     return $response;
 });
 
-$app->get('/users', function ($request, $response) {
-    return $response->write('GET /users');
-});
-
-$app->post('/users', function ($request, $response) {
-    return $response->withStatus(302);
-});
 
 $app->get('/courses/{id}', function ($request, $response, array $args) {
     $id = $args['id'];
@@ -36,5 +32,22 @@ $app->get('/users/{id}', function ($request, $response, $args) {
 
     return $this->get('renderer')->render($response, 'users/show.phtml', $params);
 });
+
+$app->get('/users', function ($request, $response) use ($users) {
+    $searchTerm = $request->getQueryParams()['search'] ?? '';
+
+    $filteredUsers = collect($users)->filter(function ($user) use ($searchTerm) {
+        return str_contains($user, $searchTerm);
+    });
+
+    $params = ['users' => $filteredUsers, 'searchTerm' => $searchTerm];
+
+    return $this->get('renderer')->render($response, 'users/index.phtml', $params);
+});
+
+$app->post('/users', function ($request, $response) {
+    return $response->withStatus(302);
+});
+
 
 $app->run();
