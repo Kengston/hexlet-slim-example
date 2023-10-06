@@ -37,7 +37,7 @@ $app->get('/users', function ($request, $response) use ($users) {
     $searchTerm = $request->getQueryParams()['search'] ?? '';
 
     $filteredUsers = collect($users)->filter(function ($user) use ($searchTerm) {
-        return str_contains($user, $searchTerm);
+        return str_starts_with($user, $searchTerm);
     });
 
     $params = ['users' => $filteredUsers, 'searchTerm' => $searchTerm];
