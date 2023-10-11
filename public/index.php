@@ -75,7 +75,7 @@ $app->group('/users', function($app) {
             $json = json_encode($users, JSON_PRETTY_PRINT);
             file_put_contents('users.json', $json);
 
-            $url = $this->get('router')->urlFor('show_user', ['name' => $user['name']]);
+            $url = $this->get('router')->urlFor('show_user',  ['name' => $user['name']]);
 
             return $response->withHeader('Location', $url)->withStatus(302);
         } else {
