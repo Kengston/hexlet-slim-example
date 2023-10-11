@@ -1,2 +1,13 @@
-<h1>id = <?= htmlspecialchars($id) ?></h1>
-<h1>nickname = <?= htmlspecialchars($nickname) ?></h1>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Profile</title>
+</head>
+<body>
+<h1>User Profile</h1>
+<p><strong>Nickname:</strong> <?= $user['name'] ?></p>
+<p><strong>Email:</strong> <?= $user['email'] ?></p>
+
+<a href="/users">Back to Users</a>
+</body>
+</html>
