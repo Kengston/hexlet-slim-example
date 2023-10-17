@@ -26,5 +26,8 @@
 <p><strong>Nickname:</strong> <?= $user['name'] ?></p>
 <p><strong>Email:</strong> <?= $user['email'] ?></p>
 <a href="/users">Back to Users</a>
+<!-- Добавляем кнопку для редактирования пользователя, передавая URL для редактирования пользователя из параметров -->
+<a href="<?= $router->urlFor('edit_user', ['name' => $user['name']]) ?>">Edit User</a>
+
 </body>
 </html>

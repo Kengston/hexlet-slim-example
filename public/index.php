@@ -105,9 +105,11 @@
             $users = json_decode($userJson, true);
             $messages = $this->get('flash')->getMessages();
 
+            $router = $this->get('router');
+
             foreach ($users as $user) {
                 if (isset($user['name']) && $user['name'] === $name) {
-                    return $this->get('renderer')->render($response, 'users/show.phtml', ['user' => $user, 'messages' => $messages]);
+                    return $this->get('renderer')->render($response, 'users/show.phtml', ['user' => $user, 'messages' => $messages, 'router' => $router]);
                 }
             }
 
