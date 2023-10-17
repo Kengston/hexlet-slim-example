@@ -1,8 +1,26 @@
+<style>
+    .alert {
+        padding: 15px;
+        margin-bottom: 20px;
+        border: 1px solid transparent;
+        border-radius: 4px;
+    }
+
+    .alert-success {
+        background-color: #d4edda;
+        border-color: #c3e6cb;
+        color: #155724;
+    }
+</style>
 <form method="GET" action="/users">
     <input type="text" name="search" placeholder="Поиск по имени" value="<?= $searchTerm ?>">
     <button type="submit">Искать</button>
 </form>
-
+<?php if (!empty($messages['success'])): ?>
+    <div class="alert alert-success">
+        <?= $messages['success'][0] ?>
+    </div>
+<?php endif ?>
 <table>
     <?php foreach ($users as $user): ?>
         <tr>

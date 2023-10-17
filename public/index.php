@@ -45,7 +45,9 @@
                 return is_array($user) && array_key_exists('name', $user) && str_starts_with($user['name'], $searchTerm);
             });
 
-            $params = ['users' => $filteredUsers, 'searchTerm' => $searchTerm];
+            $messages = $this->get('flash')->getMessages();
+
+            $params = ['users' => $filteredUsers, 'searchTerm' => $searchTerm, 'messages' => $messages];
 
             return $this->get('renderer')->render($response, 'users/index.phtml', $params);
         })->setName('users');
@@ -160,6 +162,28 @@
 
             return $response->withHeader('Location', $url)->withStatus(302);
         });
+
+        $app->delete('/{name}', function ($request, $response, $args) {
+            $name = $args['name'];
+            $userJson = file_get_contents('users.json');
+            $users = json_decode($userJson, true);
+
+            $updatedUsers = array_filter($users, function ($user) use ($name) {
+                return !(isset($user['name']) && $user['name'] === $name);
+            });
+
+            $json = json_encode(array_values($updatedUsers), JSON_PRETTY_PRINT);
+            file_put_contents('users.json', $json);
+
+
+            $flash = $this->get('flash')->addMessage('success', 'User was deleted successfully');
+
+            $url = $this->get('router')->urlFor('users');
+
+            return $response->withHeader('Location', $url)->withStatus(302);
+        })->setName('delete_user');
+
+
     });
 
     $app->run();
